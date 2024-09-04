@@ -26,7 +26,17 @@ c(1, 2, 'f')
 
 <!-- Challenge 1 answer begin -->
 
-Your answer goes here
+\> c(1, 2, 3)
+
+\[1\] 1 2 3 This results in an integer vector
+
+\> c('d', 'e', 'f')
+
+\[1\] "d" "e" "f" This results in a character vector
+
+\> c(1, 2, 'f')
+
+\[1\] "1" "2" "f" This results in a character vector
 
 <!-- Challenge 1 answer end -->
 
@@ -36,7 +46,7 @@ Look at the help for the `paste` function. You will need to use it later. What's
 
 <!-- Challenge 2 answer begin -->
 
-Your answer goes here
+sep uses a character to determine how each term is separated in the paste function result. collapse is an optional character to determine how results are separated in the paste function result.
 
 <!-- Challenge 2 answer end -->
 
@@ -52,6 +62,9 @@ Use `??"read table"` to look up functions related to reading in tabular data.
 
 <!-- Challenge 3 answer begin -->
 
-Your answer goes here
+```         
+read.delim(file, header = TRUE, sep = "\t", quote = "\"",
+           dec = ".", fill = TRUE, comment.char = "", ...)
+```
 
 <!-- Challenge 3 answer end -->

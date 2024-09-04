@@ -39,7 +39,7 @@ Open an RStudio project through the file system
 
 <!-- Challenge 2 answer begin -->
 
-![](screenshot.png)
+![Screenshot](Screenshot%202024-09-03%20at%2012.42.23%E2%80%AFPM.png)
 
 <!-- Challenge 2 answer end -->
 
