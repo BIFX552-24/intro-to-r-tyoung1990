@@ -27,13 +27,13 @@ Use the starter code provided here and complete the tasks below.
 cats <- read.csv("data/feline-data_v2.csv")
 
 # 1. Print the data
-## your command goes here ##
+cats
 
 # 2. Show an overview of the table with all data types
-## your command goes here ##
+str(cats)
 
-# 3. The "weight" column has the incorrect data type ## your comment goes here ##.
-#    The correct data type is: ## your comment goes here ##
+# 3. The "weight" column has the incorrect data type character
+#    The correct data type is: integer
 
 # 4. Correct the 4th weight data point with the mean of the two given values
 cats$weight[4] <- 2.35
@@ -42,7 +42,7 @@ cats$weight[4] <- 2.35
 cats
 
 # 5. Convert the weight to the right data type
-cats$weight <- ## your command goes here ##
+cats$weight <- as.integer(cats$weight)
 
 #    Calculate the mean to test yourself
 mean(cats$weight)
@@ -60,7 +60,8 @@ Make a vector with the numbers 1 through 26 (save this vector to the variable `x
 <!-- Challenge 2 answer begin -->
 
 ```{r}
-# your commands go here
+x <- 1:26
+x * 2
 ```
 
 <!-- Challenge 2 answer end -->
@@ -72,7 +73,9 @@ What is the data type of the names of `mean_male_height`? You can find out using
 <!-- Challenge 3 answer begin -->
 
 ```{r}
-# your command goes here
+mean_male_height <- c(age20_39 = 176.1, age40_59 = 175.8, age60_plus = 173.4)  
+
+str(mean_male_height) #it is a character vector
 ```
 
 <!-- Challenge 3 answer end -->
@@ -91,10 +94,10 @@ Create a vector that gives the number for each letter in the alphabet! R has a b
 
 ```{r}
 # Generate a vector called letter_no with the sequence of numbers from 1 to 26!
-letter_no <- ## your command goes here ##
+letter_no <- 1:26
 
 # Set the names of the number sequence to the 26 letters in `LETTERS`.
-## your command goes here ##
+names(letter_no) <- LETTERS
 
 # Test yourself by calling `letter_no["B"]`, which should give you the number 2!
 letter_no["B"]
@@ -110,43 +113,46 @@ There are several subtly different ways to call variables, observations and elem
 
 ```{r}
 cats[1]
+
 ```
 
-Explain output here.
+This code returns a list containing all datapoints from the first column.
 
 ```{r}
 cats[[1]]
 ```
 
-Explain output here.
+This code outputs the character data points contained within the first column
 
 ```{r}
 cats$coat
 ```
 
-Explain output here.
+Same output as previous example but we are specifically calling the coat variable from the cats data.frame.
 
 ```{r}
 cats["coat"]
 ```
 
-Explain output here.
+Same output as the first example, but we are specifically calling for the list of all the values in the coat column.
 
 ```{r}
 cats[1, 1]
 ```
 
-Explain output here.
+Output is the value of the data point in the first row of the first column which is a character.
 
 ```{r}
 cats[, 1]
 ```
 
-Explain output here.
+Output is the values of all rows in column 1 which are characters.
 
 ```{r}
 cats[1, ]
 ```
+
+Output is a list containing values from the first row of each column, their row number, and type for each variable.
 
 <!-- Challenge 5 answer end -->
 
@@ -162,7 +168,7 @@ what do you think will be the result of `length(matrix_example)`? Try it. Were y
 
 <!-- Challenge 6 answer begin -->
 
-Explain here.
+I thought that maybe it would give the length for each dimension of the matrix and not the total number of points in the matrix (18). The matrix class stores the number of columns and rows.
 
 <!-- Challenge 6 answer end -->
 
@@ -174,10 +180,11 @@ Make another matrix, this time containing the numbers 1:50, with 5 columns and 1
 
 ```{r}
 # using matrix with default `matrix` parameters
-## your command goes here
-
+matrix_example2 <- matrix(1:50, ncol = 5, nrow = 10)
+matrix_example2
 # modify the previous command to fill in the opposite order as above
-## your command goes here
+matrix_example2 <- matrix(1:50, nrow = 10,ncol = 5, byrow = TRUE )
+matrix_example2
 ```
 
 <!-- Challenge 7 answer end -->
@@ -194,7 +201,8 @@ Populate each character vector with the names of the data types and data structu
 <!-- Challenge 8 answer begin -->
 
 ```{r}
-## you command goes here
+modulefour_list <- list(data_types = c('logical', 'integer', 'character', 'double', 'complex'), data_structures = c('vector', 'matrix', 'list', 'data.frame'))
+modulefour_list
 ```
 
 <!-- Challenge 8 answer end -->
@@ -220,7 +228,7 @@ What was the command that generated this output? Examine each command and try to
 <!-- Challenge 9 answer begin -->
 
 ```{r}
-# your codmmand goes here
+matrix(c(4, 1, 9, 5, 10, 7), ncol = 2, byrow = TRUE)
 ```
 
 <!-- Challenge 9 answer end -->
