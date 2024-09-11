@@ -213,7 +213,7 @@ gapminder[gapminder$year == 2002 | 2007,]
 <!-- Challenge 8b answer begin -->
 
 ```{r}
-# your code goes here
+# your code goes here 
 ```
 
 <!-- Challenge 8b answer end -->
