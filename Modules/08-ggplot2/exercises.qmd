@@ -33,7 +33,7 @@ Modify the example so that the figure shows how life expectancy has changed over
 <!-- Challenge 1 answer begin -->
 
 ```{r}
-ggplot(data = gapminder, mapping = aes(x = gdpPercap, y = lifeExp)) + geom_point()
+ggplot(data = gapminder, mapping = aes(x = year , y = lifeExp)) + geom_point()
 ```
 
 <!-- Challenge 1 answer end -->
@@ -45,8 +45,10 @@ In the previous examples and challenge we've used the `aes` function to tell the
 <!-- Challenge 2 answer begin -->
 
 ```{r}
-# you code goes here
+ggplot(data = gapminder, mapping = aes(x = year , y = lifeExp, color = continent)) + geom_point()
 ```
+
+Seems like Africa trends lower than everyone else while Europe and the Americas trend higher with Asia being more in the middle.
 
 <!-- Challenge 2 answer end -->
 
@@ -66,8 +68,13 @@ Switch the order of the point and line layers from the previous example. What ha
 <!-- Challenge 3 answer begin -->
 
 ```{r}
-# Your code goes here
+ggplot(data = gapminder, mapping = aes(x=year, y=lifeExp, by=country)) +
+  geom_point(color = 'grey40') +
+  geom_line(mapping = aes(color=continent)) + 
+  scale_color_manual(values = cbbPalette)
 ```
+
+Changing the order put the points behind the lines so R must use the order that they are called to layer them.
 
 <!-- Challenge 3 answer end -->
 
@@ -78,8 +85,9 @@ We can fit a simple relationship to the data by adding another layer, `geom_smoo
 ```{r}
 ggplot(data = gapminder, mapping = aes(x = gdpPercap, y = lifeExp)) +
   geom_point(alpha = 0.5) + 
-  scale_x_log10() +
-  geom_smooth(method="lm", size=1.5)
+  geom_smooth(method="lm", linewidth=1.5)+
+  scale_x_log10() 
+  
 ```
 
 Modify the color and size of the points on the point layer in the previous example.
@@ -89,7 +97,10 @@ Hint: do not use the `aes` function.
 <!-- Challenge 4a answer begin -->
 
 ```{r}
-# Your code goes here
+ggplot(data = gapminder, mapping = aes(x = gdpPercap, y = lifeExp)) +
+  geom_point(alpha = 0.5, color = 'red4', size = 0.5 ) + 
+  geom_smooth(method="lm", linewidth=1.5)+
+  scale_x_log10() 
 ```
 
 <!-- Challenge 4a answer end -->
@@ -101,7 +112,12 @@ Modify your solution above so that the points are now a different shape and are 
 <!-- Challenge 4b answer begin -->
 
 ```{r}
-# Your code goes here
+ggplot(data = gapminder, mapping = aes(x = gdpPercap, y = lifeExp, color = continent, shape = continent)) +
+  geom_point(alpha = 0.5, size = 1) +
+  scale_x_log10()+
+  geom_smooth(method="lm", linewidth=1.5, se = FALSE)+
+  scale_color_manual(values = cbbPalette)
+   
 ```
 
 <!-- Challenge 4b answer end -->
@@ -115,7 +131,12 @@ Modify your solution above so that the points are now a different shape and are 
 <!-- Challenge 5 answer begin -->
 
 ```{r}
-# your code goes here
+ggplot(data = gapminder, mapping = aes(x = continent, y = lifeExp, color = continent)) +
+  geom_boxplot()+
+  labs(y = "Life Expectancy", x = NULL )+
+  facet_wrap(~year)+
+  theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
+
 ```
 
 <!-- Challenge 5 answer end -->
