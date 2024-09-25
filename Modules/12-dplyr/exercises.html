@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Writing Data</title>
+<title>Data frames with dplyr</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -108,7 +108,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Writing Data</h1>
+<h1 class="title">Data frames with dplyr</h1>
 </div>
 
 
@@ -123,8 +123,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>The exercises in this document follow along closely with <a href="https://swcarpentry.github.io/r-novice-gapminder/11-writing-data.html">Lesson 11</a> of <a href="https://swcarpentry.github.io/r-novice-gapminder/">R for Reproducible Scientific Analysis</a>, provided by the <a href="https://software-carpentry.org/">Software Carpentry</a> community under the creative commons license, <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>. For more information see <a href="https://carpentries.org/">The Carpentries</a>.</p>
-<!-- check that this works on Windows (may need to use Sys.info()['sysname']) -->
+<p>The exercises in this document follow along closely with <a href="https://swcarpentry.github.io/r-novice-gapminder/13-dplyr.html">Lesson 13</a> of <a href="https://swcarpentry.github.io/r-novice-gapminder/">R for Reproducible Scientific Analysis</a>, provided by the <a href="https://software-carpentry.org/">Software Carpentry</a> community under the creative commons license, <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>. For more information see <a href="https://carpentries.org/">The Carpentries</a>.</p>
 <div class="callout-tip callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -136,47 +135,97 @@ Key Points
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><p>Save plots from RStudio using the ‘Export’ button.</p></li>
-<li><p>Use <code>write.table</code> to save tabular data.</p></li>
+<li>Use the <code>dplyr</code> package to manipulate data frames.</li>
+<li>Use <code>select()</code> to choose variables from a data frame.</li>
+<li>Use <code>filter()</code> to choose data based on values.</li>
+<li>Use <code>group_by()</code> and <code>summarize()</code> to work with subsets of data.</li>
+<li>Use <code>mutate()</code> to create new variables.</li>
 </ul>
 </div>
 </div>
 <section id="challenge-1" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-1">Challenge 1</h4> <img src="score1.png">
-<p>Modify the code below to print a second page in the pdf, showing a facet plot (hint: use <code>facet_grid</code>) of the same data with one panel per continent.</p>
+<h4 class="anchored" data-anchor-id="challenge-1">Challenge 1</h4>
+<p>Write a single command (which can span multiple lines and includes pipes) that will produce a data frame that has the African values for <code>lifeExp</code>, <code>country</code> and <code>year</code>, but not for other Continents. How many rows does your data frame have and why?</p>
 <!-- Challenge 1 answer begin -->
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">file.path</span>(module11, <span class="st">"Life_Exp_vs_time.pdf"</span>), <span class="at">width=</span><span class="dv">12</span>, <span class="at">height=</span><span class="dv">4</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(year, lifeExp, <span class="at">color=</span>country)) <span class="sc">+</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gapminder, <span class="fu">aes</span>(year, lifeExp, <span class="at">color=</span>country)) <span class="sc">+</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span> continent)<span class="sc">+</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># You then have to make sure to turn off the pdf device!</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(gap_africa <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">'Africa'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(lifeExp, country, year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>quartz_off_screen 
-                2 </code></pre>
+<pre><code># A tibble: 624 × 3
+   lifeExp country  year
+     &lt;dbl&gt; &lt;fct&gt;   &lt;int&gt;
+ 1    43.1 Algeria  1952
+ 2    45.7 Algeria  1957
+ 3    48.3 Algeria  1962
+ 4    51.4 Algeria  1967
+ 5    54.5 Algeria  1972
+ 6    58.0 Algeria  1977
+ 7    61.4 Algeria  1982
+ 8    65.8 Algeria  1987
+ 9    67.7 Algeria  1992
+10    69.2 Algeria  1997
+# … with 614 more rows</code></pre>
 </div>
 </div>
+<p>This subset of gapminder contains 624 rows. This corresponds to 52 countries over 12 years.</p>
 <!-- Challenge 1 answer end -->
 </section>
 <section id="challenge-2" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-2">Challenge 2</h4> <img src="score2.png">
-<p>Write a data-cleaning script file that subsets the gapminder data to include only data points collected since 1990.</p>
-<p>Use this script to write out the new subset to a file in the <code>cleaned-data/</code> directory.</p>
+<h4 class="anchored" data-anchor-id="challenge-2">Challenge 2</h4>
+<p>Calculate the average life expectancy per country. Which has the longest average life expectancy and which has the shortest average life expectancy?</p>
 <!-- Challenge 2 answer begin -->
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">'data-cleaning.R'</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(gapminder_cleaned, <span class="at">file =</span> <span class="fu">file.path</span>(module11, <span class="st">'cleaned-data'</span>, <span class="st">'gapminder-cleaned.csv'</span>), <span class="at">sep =</span> <span class="st">','</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">quote =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(avg_lifeExp <span class="ot">&lt;-</span> gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_lifeExp =</span> <span class="fu">mean</span>(lifeExp)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 142 × 2
+   country     mean_lifeExp
+   &lt;fct&gt;              &lt;dbl&gt;
+ 1 Afghanistan         37.5
+ 2 Albania             68.4
+ 3 Algeria             59.0
+ 4 Angola              37.9
+ 5 Argentina           69.1
+ 6 Australia           74.7
+ 7 Austria             73.1
+ 8 Bahrain             65.6
+ 9 Bangladesh          49.8
+10 Belgium             73.6
+# … with 132 more rows</code></pre>
 </div>
+</div>
+<p>The country with the longest average life expectancy is Iceland . The country with the shortest lifespan is Sierra Leone .</p>
 <!-- Challenge 2 answer end -->
+</section>
+<section id="challenge-3" class="level4">
+<h4 class="anchored" data-anchor-id="challenge-3">Challenge 3</h4>
+<p>Calculate the average life expectancy in 2002 of 2 randomly selected countries for each continent. Then arrange the continent names in reverse order. <strong>Hint:</strong> Use the <code>dplyr</code> functions <code>arrange()</code> and <code>slice_sample()</code>, they have similar syntax to other dplyr functions.</p>
+<!-- Challenge 3 answer begin -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">293847</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2002</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_lifeExp =</span> <span class="fu">mean</span>(lifeExp)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(continent))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  continent mean_lifeExp
+  &lt;fct&gt;            &lt;dbl&gt;
+1 Oceania           79.7
+2 Europe            76.7
+3 Asia              66.5
+4 Americas          69.4
+5 Africa            50.6</code></pre>
+</div>
+</div>
+<!-- Challenge 3 answer end -->
 </section>
 
 </main>
